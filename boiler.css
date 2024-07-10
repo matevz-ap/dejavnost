@@ -1,0 +1,43 @@
+.h-100 {
+    height: 100%;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.flex {
+    display: flex;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.grow {
+    flex-grow: 1;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.text-white {
+    color: white;
+}
+
+.aspect {
+    aspect-ratio: 1;
+}
+
+* {
+    font-family: "Kanit", sans-serif !important;
+}

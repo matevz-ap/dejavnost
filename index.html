@@ -1,125 +1,60 @@
 <!doctype html>
 <html lang="en" class="h-100">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Document</title>
-        <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
-        />
-        <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.colors.min.css"
-        />
-        <style>
-            .h-100 {
-                height: 100%;
-            }
 
-            .w-100 {
-                width: 100%;
-            }
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.colors.min.css" />
+    <link rel="stylesheet" href="./boiler.css">
+    </link>
+</head>
 
-            .text-center {
-                text-align: center;
-            }
-        </style>
-    </head>
-    <body class="h-100">
-        <div
-            class="container h-100"
-            style="
-                display: flex;
-                align-items: center;
-                flex-direction: column;
-                justify-content: center;
-            "
-        >
-            <div
-                id="currentActivity"
-                class="text-center w-100"
-                style="height: 50px; margin-top: auto"
-            ></div>
-            <div class="grid w-100">
-                <button
-                    onclick="selectActivity('show')"
-                    class="pico-background-red-400"
-                >
-                    Show
-                </button>
-                <button onclick="selectActivity('explain')">Explain</button>
-                <button
-                    onclick="selectActivity('draw')"
-                    class="pico-background-green-200"
-                >
-                    Draw
-                </button>
-            </div>
-            <div class="w-100" style="margin-top: auto">
-                <select
-                    name="deck-selection"
-                    id="deckSelection"
-                    aria-label="Select your favorite cuisine..."
-                    required
-                ></select>
-            </div>
+<body class="h-100">
+    <div class="container h-100 flex align-center justify-center" style="
+                flex-direction: column; max-width: 400px;
+            ">
+        <div style="padding: 18px"><h1>Dejavnost</h1></div>
+        <div id="currentActivity" class="text-center w-100" style="height: 50px; margin-top: auto"></div>
+        <div class="w-100 flex" style="gap: 12px">
+            <button onclick="selectActivity('show')" class="pico-background-red-400 grow text-white aspect">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-person-standing">
+                    <circle cx="12" cy="5" r="1" />
+                    <path d="m9 20 3-6 3 6" />
+                    <path d="m6 8 6 2 6-2" />
+                    <path d="M12 10v4" /></svg>
+            </button>
+            <button onclick="selectActivity('explain')" class="grow text-white aspect"><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                    height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-speech">
+                    <path
+                        d="M8.8 20v-4.1l1.9.2a2.3 2.3 0 0 0 2.164-2.1V8.3A5.37 5.37 0 0 0 2 8.25c0 2.8.656 3.054 1 4.55a5.77 5.77 0 0 1 .029 2.758L2 20" />
+                    <path d="M19.8 17.8a7.5 7.5 0 0 0 .003-10.603" />
+                    <path d="M17 15a3.5 3.5 0 0 0-.025-4.975" /></svg></button>
+            <button onclick="selectActivity('draw')" class="pico-background-green-300 grow text-white aspect">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-pen-line">
+                    <path d="M12 20h9" />
+                    <path
+                        d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z" />
+                </svg>
+            </button>
         </div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/pocketbase/0.20.0/pocketbase.umd.js"></script>
-        <script>
-            const pb = new PocketBase("https://dejavnost.mapsoft.net");
-            let activities = { show: [], explain: [], draw: [] };
+        <div class="w-100" style="margin-top: auto">
+            <label for="deckSelection">Select a deck</label>
+            <select name="deck-selection" id="deckSelection" aria-label="Select your favorite cuisine..."
+                required></select>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pocketbase/0.20.0/pocketbase.umd.js"></script>
+    <script src="./main.js"></script>
+</body>
 
-            pb.collection("deck")
-                .getFullList()
-                .then((decks) => {
-                    const deckSelection =
-                        document.getElementById("deckSelection");
-                    for (const deck of decks) {
-                        const option = document.createElement("option");
-                        option.value = deck.id;
-                        option.text = deck.name;
-                        deckSelection.appendChild(option);
-                    }
-                })
-                .then(() => {
-                    loadDeck(document.getElementById("deckSelection").value);
-                });
-
-            document
-                .getElementById("deckSelection")
-                .addEventListener("change", (event) => {
-                    loadDeck(event.target.value);
-                });
-            function loadDeck(deckId) {
-                activities = { show: [], explain: [], draw: [] };
-                const records = pb
-                    .collection("activity")
-                    .getFullList({
-                        filter: `deck='${deckId}'`,
-                        sort: "-created",
-                    })
-                    .then((records) => {
-                        for (const activity of records) {
-                            activities[activity.type].push(activity);
-                        }
-                    });
-            }
-
-            function selectActivity(activityType) {
-                if (activities[activityType].length == 0) {
-                    alert("No more activities");
-                    return;
-                }
-
-                let index = Math.floor(
-                    Math.random() * activities[activityType].length,
-                );
-                let activity = activities[activityType].splice(index, 1)[0];
-                document.getElementById("currentActivity").innerHTML = `
-                    <h1>${activity.name}</h1>
-                `;
-            }
-        </script>
-    </body>
 </html>
