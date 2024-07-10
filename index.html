@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en" class="h-100">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.colors.min.css"
+        />
+        <style>
+            .h-100 {
+                height: 100%;
+            }
+
+            .w-100 {
+                width: 100%;
+            }
+
+            .text-center {
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body class="h-100">
+        <div
+            class="container h-100"
+            style="
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+                justify-content: center;
+            "
+        >
+            <div
+                id="currentActivity"
+                class="text-center w-100"
+                style="height: 50px; margin-top: auto"
+            ></div>
+            <div class="grid w-100">
+                <button
+                    onclick="selectActivity('show')"
+                    class="pico-background-red-400"
+                >
+                    Show
+                </button>
+                <button onclick="selectActivity('explain')">Explain</button>
+                <button
+                    onclick="selectActivity('draw')"
+                    class="pico-background-green-200"
+                >
+                    Draw
+                </button>
+            </div>
+            <div class="w-100" style="margin-top: auto">
+                <select
+                    name="deck-selection"
+                    id="deckSelection"
+                    aria-label="Select your favorite cuisine..."
+                    required
+                ></select>
+            </div>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pocketbase/0.20.0/pocketbase.umd.js"></script>
+        <script>
+            const pb = new PocketBase("https://dejavnost.mapsoft.net");
+            let activities = { show: [], explain: [], draw: [] };
+
+            pb.collection("deck")
+                .getFullList()
+                .then((decks) => {
+                    const deckSelection =
+                        document.getElementById("deckSelection");
+                    for (const deck of decks) {
+                        const option = document.createElement("option");
+                        option.value = deck.id;
+                        option.text = deck.name;
+                        deckSelection.appendChild(option);
+                    }
+                })
+                .then(() => {
+                    loadDeck(document.getElementById("deckSelection").value);
+                });
+
+            document
+                .getElementById("deckSelection")
+                .addEventListener("change", (event) => {
+                    loadDeck(event.target.value);
+                });
+            function loadDeck(deckId) {
+                activities = { show: [], explain: [], draw: [] };
+                const records = pb
+                    .collection("activity")
+                    .getFullList({
+                        filter: `deck='${deckId}'`,
+                        sort: "-created",
+                    })
+                    .then((records) => {
+                        for (const activity of records) {
+                            activities[activity.type].push(activity);
+                        }
+                    });
+            }
+
+            function selectActivity(activityType) {
+                if (activities[activityType].length == 0) {
+                    alert("No more activities");
+                    return;
+                }
+
+                let index = Math.floor(
+                    Math.random() * activities[activityType].length,
+                );
+                let activity = activities[activityType].splice(index, 1)[0];
+                document.getElementById("currentActivity").innerHTML = `
+                    <h1>${activity.name}</h1>
+                `;
+            }
+        </script>
+    </body>
+</html>
